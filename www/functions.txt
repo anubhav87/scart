@@ -1,0 +1,3 @@
+createUserWithEmailAndPassword
+resetUserpasswordWithEmail
+signInWithEmailAndPassword
