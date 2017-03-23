@@ -21,6 +21,11 @@ switch($_GET['action'])  {
     case 'login_user' :
         loginUser($_REQUEST); 
         break;
+
+    case 'get_categories' :
+        getCategories($_REQUEST); 
+        break;
+
 }
 
 function openDbConn() {
@@ -121,6 +126,41 @@ function resetPassword($p_data) {
 			'success' => 'Password reset email had been send to registered email, please click the link in email to reset the password!'
 		);
     }
+
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+}
+
+function getCategories() {
+	
+	$con = openDbConn();
+
+	$sql=  "SELECT cp.category_id AS category_id, GROUP_CONCAT(cd1.name ORDER BY cp.level SEPARATOR '  >  ') AS name, c1.parent_id, c1.sort_order FROM oc_category_path cp LEFT JOIN oc_category c1 ON (cp.category_id = c1.category_id) LEFT JOIN oc_category c2 ON (cp.path_id = c2.category_id) LEFT JOIN oc_category_description cd1 ON (cp.path_id = cd1.category_id) LEFT JOIN oc_category_description cd2 ON (cp.category_id = cd2.category_id) WHERE cd1.language_id = '1' AND cd2.language_id = '1' GROUP BY cp.category_id ORDER BY name ASC LIMIT 0,100";
+	$res = mysqli_query($con,$sql);
+    if (!mysqli_num_rows($res)) {
+		$arr = array (
+			'msg' => "error",
+			'success' => 'No categories found!'
+		);    	
+    } else {
+    	$data = array();
+    	while ($row = mysqli_fetch_array($res)) {
+
+			$row_data = array();
+			$row_data['category_id'] = $row['category_id'];
+			$row_data['name'] = $row['name'];
+			$row_data['parent_id'] = $row['parent_id'];
+			$row_data['sort_order'] = $row['sort_order'];
+    		array_push($data, $row_data);
+    	}
+		$arr = array (
+			'msg' => "success",
+			'categories' => $data,
+			'success' => 'Categoreis found and returned!'
+		);    	
+    }
+
 
 	sleep(1);
     $jsn = json_encode($arr);

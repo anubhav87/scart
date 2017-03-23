@@ -34,6 +34,12 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('category', {
+      url: '/page7',
+      templateUrl: 'templates/menu2.html',
+      controller: 'categoryCtrl'
+    })
+
   .state('menu2', {
       url: '/page7',
       templateUrl: 'templates/menu2.html',

@@ -156,3 +156,46 @@ angular.module('app.controllers', [])
         $state.go('tabsController.login', {}, {location: "replace"});
     }
 })
+
+.controller('categoryCtrl', function($scope,$rootScope,sharedUtils,$ionicHistory,$state,$ionicSideMenuDelegate) {
+
+    $rootScope.extras = true;
+
+    $scope.menu = [];
+    $scope.loadMenu = function() {
+      sharedUtils.showLoading();
+      //$scope.menu=$firebaseArray(fireBaseData.refMenu());
+
+      //sharedUtils.hideLoading();
+      sharedUtils.getCategories().then(function (result) {
+         sharedUtils.hideLoading();
+          if (result.data.msg == "error") {
+            sharedUtils.showAlert("Category error", result.data.error);  
+          } else {
+            $scope.menu = result.data.categories;
+            console.dir(result.data);
+            $scope.$broadcast("scroll.refreshComplete");
+            //sharedUtils.showAlert("Reset Password", result.data.success);  
+            //sharedUtils.changeView('/page1/page5');
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Category fetch error!");
+      });
+    }
+
+    $scope.loadSubcategoryMenu = function(category_id) {
+      console.dir(category_id);
+      console.dir($scope.menu.length);
+      $scope.subMenu = [];
+      for(var i =0;i<$scope.menu.length;i++) {
+        if($scope.menu[i].parent_id == category_id) {
+          $scope.subMenu.push($scope.menu[i]);
+        }
+      }
+        console.dir($scope.subMenu);
+
+    }    
+    //sharedUtils.showLoading();
+
+})

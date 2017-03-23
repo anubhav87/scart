@@ -89,6 +89,23 @@ angular.module('app.services', [])
         });
     };
 
+    functionObj.getCategories = function() {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      //url: base_url + 'json/save_book',
+      url: $rootScope.base_url+ 'get_categories',
+      method: "POST",
+      //data: request_data,
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          return response;
+          //$rootScope.$emit('handleUserSignup',user);
+        });
+    };
+
     return functionObj;
 
 }])
