@@ -1,12 +1,13 @@
 <ion-view style="" class=" " id="page7" title="Menu">
 	<ion-content class="has-header" padding="false"  ng-init="loadMenu()"  >
 		<ion-refresher on-refresh="loadMenu();"></ion-refresher>
-		<div class="row" ng-repeat="item in menu" ng-if="menu[$index].parent_id == 0" style="border-top: 1px solid #999;">
-			<div class="col col-100" style="padding:1px;border-right:0px solid #999" >
-					<p ng-click="loadSubcategoryMenu(menu[$index].category_id)" style="border-width: 0px; border-style: none;font-size: 14px;text-align:left;" class="item item-icon-right assertive">
-						<span ng-bind-html="menu[$index].name"></span>
-					</p>
-			</div>
+		<div class="bar bar-header item-input-inset">
+			<input type="text" placeholder=" Search" ng-model="search" style="width:100%; padding-left:11px;" />
 		</div>
+		<ion-list>
+		  <ion-item  type="item-text-wrap" ng-repeat="item in menu | filter:search">
+		    <span ng-bind-html="item.name"></span>
+		  </ion-item>
+		</ion-list>
 	</ion-content>
 </ion-view>
