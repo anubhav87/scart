@@ -14,6 +14,58 @@ angular.module('app.routes', [])
     abstract:true
   })
 
+  .state('tabsController.dashboard', {
+    url: '/dashboard',
+    views: {
+      'tab2': {
+        templateUrl: 'templates/dashboard.html',
+        controller: 'dashboardCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.category', {
+    url: '/category',
+    views: {
+      'tab4': {
+        templateUrl: 'templates/category.html',
+        controller: 'categoryCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.profile', {
+    url: '/profile',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/profile.html',
+        controller: 'profileCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.cart', {
+    url: '/cart',
+    views: {
+      'tab6': {
+        templateUrl: 'templates/cart.html',
+        controller: 'cartCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.notification', {
+    url: '/notification',
+    views: {
+      'tab7': {
+        templateUrl: 'templates/notifications.html',
+        controller: 'notificationCtrl'
+      }
+    }
+  })
+
+
+
   .state('tabsController.login', {
     url: '/page5',
     views: {
@@ -105,7 +157,8 @@ angular.module('app.routes', [])
     }
   })
 
-$urlRouterProvider.otherwise('/page1/page5')
+$urlRouterProvider.otherwise('/page1/dashboard')
+//$urlRouterProvider.otherwise('/page1/page5')
 //$urlRouterProvider.otherwise('/page7')
 
 

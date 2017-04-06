@@ -1,14 +1,37 @@
-<ion-view style="" class=" " id="page1" title="Tabs ControllerA">
+<ion-view style="" class=" " id="page1" title="Tabs Controller.HTML">
     <ion-tabs style="" id="tabsController-tabs1" class="tabs-stable  ">
-        
+
+
+        <ion-tab title="Dashboard" icon-on="ion-ios-home" icon-off="ion-ios-home-outline" href="#/dashboard">
+            <ion-nav-view name="tab2"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab title="Category" icon-on="ion-ios-list" icon-off="ion-ios-list-outline" href="#/page1/category">
+            <ion-nav-view name="tab4"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab  id="tabsController-tab5" icon-on="ion-ios-person" icon-off="ion-ios-person-outline" title="Profile" href="#/page1/profile">
+            <ion-nav-view name="tab5"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab  id="tabsController-tab7" icon-on="ion-ios-bell" icon-off="ion-ios-bell-outline" title="Profile" href="#/page1/notification">
+            <ion-nav-view name="tab7"></ion-nav-view>
+        </ion-tab>
+
+        <ion-tab  id="tabsController-tab6" icon-on="ion-ios-cart" icon-off="ion-ios-cart-outline" title="Bag" href="#/page1/cart">
+            <ion-nav-view name="tab6"></ion-nav-view>
+        </ion-tab>
+
+
+        <!--
 		<ion-tab  id="tabsController-tab1" title="LOGIN"  href="#/page1/page5">
             <ion-nav-view name="tab1"></ion-nav-view>
         </ion-tab>
-		
+ 		
         <ion-tab  id="tabsController-tab3" title="SIGN UP"  href="#/page1/page6">
             <ion-nav-view name="tab3"></ion-nav-view>
         </ion-tab>
-		
+		-->
 		
     </ion-tabs>
 

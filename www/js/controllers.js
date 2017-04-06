@@ -1,5 +1,22 @@
 angular.module('app.controllers', [])
 
+.controller('dashboardCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate) {
+
+})
+
+.controller('profileCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate) {
+
+})
+
+.controller('notificationCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate) {
+
+})
+
+.controller('cartCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate) {
+
+})
+
+
 .controller('loginCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate) {
 
     // $rootScope.extras = true;
@@ -159,7 +176,7 @@ angular.module('app.controllers', [])
 
 .controller('categoryCtrl', function($scope,$rootScope,sharedUtils,$ionicHistory,$state,$ionicSideMenuDelegate) {
 
-    $rootScope.extras = true;
+    $rootScope.extras = false;
 
     $scope.menu = [];
     $scope.loadMenu = function() {
