@@ -44,6 +44,36 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('tabsController.forgotPassword', {
+    url: '/page15',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/forgotPassword.html',
+        controller: 'forgotPasswordCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.login', {
+    url: '/page5',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/login.html',
+        controller: 'loginCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.signup', {
+    url: '/page6',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/signup.html',
+        controller: 'signupCtrl'
+      }
+    }
+  })
+  
   .state('tabsController.cart', {
     url: '/cart',
     views: {
@@ -60,28 +90,6 @@ angular.module('app.routes', [])
       'tab7': {
         templateUrl: 'templates/notifications.html',
         controller: 'notificationCtrl'
-      }
-    }
-  })
-
-
-
-  .state('tabsController.login', {
-    url: '/page5',
-    views: {
-      'tab1': {
-        templateUrl: 'templates/login.html',
-        controller: 'loginCtrl'
-      }
-    }
-  })
-
-  .state('tabsController.signup', {
-    url: '/page6',
-    views: {
-      'tab3': {
-        templateUrl: 'templates/signup.html',
-        controller: 'signupCtrl'
       }
     }
   })
@@ -147,16 +155,24 @@ angular.module('app.routes', [])
     controller: 'checkoutCtrl'
   })
 
-  .state('tabsController.forgotPassword', {
-    url: '/page15',
-    views: {
-      'tab1': {
-        templateUrl: 'templates/forgotPassword.html',
-        controller: 'forgotPasswordCtrl'
-      }
-    }
+  .state('login', {
+    url: '/page5',
+    templateUrl: 'templates/login.html',
+    controller: 'loginCtrl'
   })
 
+  .state('signup', {
+    url: '/page6',
+    templateUrl: 'templates/signup.html',
+    controller: 'signupCtrl'
+  })
+
+  .state('forgotPassword', {
+    url: '/page15',
+    templateUrl: 'templates/forgotPassword.html',
+    controller: 'forgotPasswordCtrl'
+  })
+  
 $urlRouterProvider.otherwise('/page1/dashboard')
 //$urlRouterProvider.otherwise('/page1/page5')
 //$urlRouterProvider.otherwise('/page7')

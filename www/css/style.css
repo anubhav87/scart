@@ -299,3 +299,13 @@ margin-top:10px;
 }
 
 
+/* Suggested by ionic developers to make modal full height on tablets*/
+@media (min-width: 680px){
+  .modal{
+    top: 0px !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
+}

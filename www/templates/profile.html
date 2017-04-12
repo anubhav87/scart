@@ -1,8 +1,53 @@
 <ion-view style="" class=" " id="profile" title="Profile">
+    <ion-nav-button side="left">
+        <button class="button button-clear" ng-click="goBack()" >
+            <i class="icon ion-ios-arrow-back"></i>
+        </button>
+     </ion-nav-button>
     <ion-content class="has-header" padding="true">
-	    I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>
-	    I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>
-	    I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>
-	    I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>I AM PROFILE PAGE</br>
+
+    	<div ng-if="extras == false">
+        	<div style="width:100%;padding-top:15px;">
+    			<div style="text-align:center;">
+<!--                     <a href="javascript:void(0);" ng-click="openModal('login')"> Login </a> | 
+                    <a href="javascript:void(0);" ng-click="openModal('signup')"> Sign Up </a> -->
+                    <a ui-sref="login">Login</a> | 
+                    <a ui-sref="signup">Sign Up</a>
+        			<br/><br/>
+        		</div>
+    		</div>
+
+    		<!-- <div style="width:100%;padding-top:15px;">
+    			<div style="text-align:center;">
+					<a href="javascript:void(0);" ng-click="openModal('forgotPassword')">Forgot Password</a>
+    			</div>
+    		</div> -->
+    	</div>
+
+    	<div ng-if="extras != false">
+			<form name="profileForm" class="list " id="login-form1">
+	            <ion-list class=" " id="login-list2">
+	                <div class="app-icon"></div>
+	                <label class="item item-input item-floating-label">
+	                    <span class="input-label" style="color: #9F9F9F;">Full Name</span>
+	                    <input ng-model="user.email" type="email" placeholder="Email" required>
+	                </label>
+	                <label class="item item-input item-floating-label">
+	                    <span class="input-label" style="color: #9F9F9F;">Mobile</span>
+	                    <input ng-model="user.mobile" type="text" placeholder="Mobile" required>
+	                </label>
+
+	                <label class="item item-input item-floating-label">
+	                    <span class="input-label" style="color: #9F9F9F;">Pincode</span>
+	                    <input ng-model="user.pincode" type="text" placeholder="Pincode" required>
+	                </label>
+	            </ion-list>
+	            <div style="height: 40px;" class="spacer"></div>
+	            <button ng-click="saveprofile(profileForm,user)" class=" button button-assertive  button-block icon-left ion-ios-compose-outline " id="save-profile">Save Profile</button>
+	        </form>
+                      <ion-item ng-click="logout()" data-componentid="list-item7" style="" id="menu-list-item7" class="item-icon-left  ">
+                        <i class="icon ion-log-out"></i>Logout
+                      </ion-item>
+    	</div>
     </ion-content>
 </ion-view>

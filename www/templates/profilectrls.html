@@ -1,0 +1,93 @@
+<ion-modal-view>
+    <div class="{{loginView}}">
+        <ion-header-bar class="bar bar-header bar-assertive">
+        <h1 class="title">Login</h1>
+          <button class="button button-clear button-primary icon icon-left ion-ios-close-outline" ng-click="closeModal('login')"></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <form name="loginForm" class="list " id="login-form1">
+                <ion-list class=" " id="login-list2">
+                    <div class="list">
+                    <label class="item item-input">
+                      <span class="input-label">Email</span>
+                      <input ng-model="user.email" type="email" placeholder="Email" required>
+                    </label>
+                    <label class="item item-input">
+                      <span class="input-label">Password</span>
+                      <input ng-model="user.password" type="password" placeholder="Password" required>
+                    </label>
+                    <button class="button button-full button-assertive" ng-click="loginEmail(loginForm,user)">LOG IN</button>
+                    </div>
+                </ion-list>
+            </form>
+            <div style="text-align: center">
+            <a href="javascript:void(0);" id="login-button5" style="text-decoration:none;">FORGOT PASSWORD?</a>
+            </div>
+        </ion-content>
+        <!-- align to the bottom of the page -->
+        <div style="position: absolute; bottom: 0px; width: 100%">
+            <div style="text-align: center">
+              <p>New to testtest <a style="text-decoration:none;" href="javascript:void(0);" ng-click="openModal('signup');">Signup</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div  class="{{signupView}}">
+        <ion-header-bar class="bar bar-header bar-assertive">
+        <h1 class="title">SIGN UP</h1>
+          <button class="button button-clear button-primary icon icon-left ion-ios-close-outline" ng-click="closeModal('signup')"></button>
+        </ion-header-bar>
+        <ion-content class="padding">
+            <form name="signupForm" class="list " id="signup-form2" novalidate>
+                <ion-list class=" " id="signup-list3">
+                  <div class="list">
+
+                    <label class="item item-input">
+                      <span class="input-label">First Name</span>
+                      <input ng-model="user.firstname" type="text" placeholder="First Name" required>
+                    </label>
+
+                    <label class="item item-input">
+                      <span class="input-label">Last Name</span>
+                      <input ng-model="user.lastname" type="text" placeholder="Last Name" required>
+                    </label>
+
+                    <label class="item item-input">
+                      <span class="input-label">Phone</span>
+                      <input ng-model="user.phone" type="text" placeholder="Phone" required>
+                    </label>
+
+                    <label class="item item-input">
+                      <span class="input-label">Email</span>
+                      <input ng-model="user.email" type="email" placeholder="Email" required>
+                    </label>
+
+                    <label class="item item-input">
+                      <span class="input-label">Password</span>
+                      <input ng-model="user.password" type="password" placeholder="Password" required>
+                    </label>
+                    
+                    <button class=" button button-full button-assertive" ng-click="signupEmail(signupForm,user)">
+                      SIGN UP WITH YOUR EMAIL
+                    </button>
+
+                   </div>
+                </ion-list>
+            </form>
+    <!--         <div style="text-align: center">
+            <a class="" id="login-button5" style="text-decoration:none;">FORGOT PASSWORD?</a>
+            </div> -->
+        </ion-content>
+        <!-- align to the bottom of the page -->
+        <div style="position: absolute; bottom: 0px; width: 100%">
+            <div style="text-align: center">
+              <p>Already have an account? <a style="text-decoration:none;" ng-click="openModal('login')">Log in</a> now</p>
+            </div>
+        </div>
+    </div>
+
+    <div  class="{{forgotPasswordView}}">
+        Forgot Password Screen
+    </div>
+
+</ion-modal-view>
