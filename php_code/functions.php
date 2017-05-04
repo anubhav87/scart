@@ -26,6 +26,9 @@ switch($_GET['action'])  {
         getCategories($_REQUEST); 
         break;
 
+    case 'get_products_by_category' :
+        getProductsByCategory($_REQUEST); 
+        break;
 }
 
 function openDbConn() {
@@ -167,7 +170,80 @@ function getCategories() {
     echo $jsn;
 }
 
+function getProductsByCategory($req_data) {
+	
+	//$con = openDbConn();
+	//print_r($req_data['category_id']);
+	$token = checkApiSession();
 
+	// Working code to get the products by category id
+	$url = 'http://localhost/opencart-2/index.php?route=api/custom/productsbycategory&token='.$token;
+	$fields = array (
+		'category_id' => $req_data['category_id'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+
+	$arr = array (
+		'msg' => "success",
+		'products' => $data->products,
+		'success' => 'Products found and returned!'
+	);
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+
+	// $url = 'http://localhost/opencart-2/index.php?route=api/custom/getcategory&token='.$ret_data->cookie;
+	// $fields = array(
+	//   'category_id' => 60,
+	// );
+	// $json = do_curl_request($url,$fields);
+	// $data = json_decode($json);
+	 
+	// print_r("</br></br>"); 
+	// var_dump($data);	
+}
+
+function do_curl_request($url, $params=array()) {
+  $ch = curl_init();
+  curl_setopt($ch,CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_COOKIEJAR, '/tmp/apicookie.txt');
+  curl_setopt($ch, CURLOPT_COOKIEFILE, '/tmp/apicookie.txt');
+ 
+  $params_string = '';
+  if (is_array($params) && count($params)) {
+    foreach($params as $key=>$value) {
+      $params_string .= $key.'='.$value.'&';
+    }
+    rtrim($params_string, '&');
+ 
+    curl_setopt($ch,CURLOPT_POST, count($params));
+    curl_setopt($ch,CURLOPT_POSTFIELDS, $params_string);
+  }
+ 
+  //execute post
+  $result = curl_exec($ch);
+ 
+  //close connection
+  curl_close($ch);
+ 
+  return $result;
+}
+
+function checkApiSession() {
+
+	$url = 'http://localhost/opencart-2/index.php?route=api/login';
+	 
+	$fields = array(
+	  'username' => 'admin',
+	  'password' => 'blV2oxA7WGykj3JurYx5nSZiocLLnNLFn6vBai57sgVpLzQsLJRhWFBwGZOGygZEtN5rOTS3FFV8de21XBrNiUhcb8GvbUHVOttKMdHpfQqHA3GT86umeOtoEOjMGakjEC2HVFPJBS5CqjdKFm3Hxa40nsPyVO4VFxLvtLoR60zUMZll63CUu8CcABeY0YyqRy3TywCHXVJ2oh4zV8xcf4xSZtXudmcJjroKGmrk425gBpfaxEFIBHQbiaEa6Ykz',
+	);
+	 
+	$json = do_curl_request($url, $fields);
+	$ret_data = json_decode($json);
+	return $ret_data->cookie;	
+}
 
 
 ?>

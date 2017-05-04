@@ -55,11 +55,31 @@ angular.module('app.routes', [])
   })
 
   .state('tabsController.login', {
-    url: '/page5',
+    url: '/page55',
     views: {
       'tab5': {
         templateUrl: 'templates/login.html',
         controller: 'loginCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.products_list', {
+    url: '/products_list/:category_id',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/products_list.html',
+        controller: 'productCtrl'
+      }
+    }
+  })
+
+  .state('tabsController.product_details', {
+    url: '/product_details/:product_id',
+    views: {
+      'tab5': {
+        templateUrl: 'templates/product_details.html',
+        controller: 'productCtrl'
       }
     }
   })
@@ -173,7 +193,9 @@ angular.module('app.routes', [])
     controller: 'forgotPasswordCtrl'
   })
   
-$urlRouterProvider.otherwise('/page1/dashboard')
+//$urlRouterProvider.otherwise('/page1/dashboard')
+$urlRouterProvider.otherwise('/page1/category')
+
 //$urlRouterProvider.otherwise('/page1/page5')
 //$urlRouterProvider.otherwise('/page7')
 

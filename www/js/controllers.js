@@ -470,7 +470,34 @@ angular.module('app.controllers', [])
 
 })
 
+.controller('productCtrl', function($scope,$rootScope,sharedUtils,$ionicHistory,$state,$stateParams,$ionicSideMenuDelegate) {
+    
+    $scope.title = "Prodcuts";
 
+    $scope.products = [];
+    $scope.loadProducts = function() {
+      sharedUtils.showLoading();
+
+      sharedUtils.getProducts($stateParams.category_id).then(function (result) {
+         sharedUtils.hideLoading();
+          if (result.data.msg == "error") {
+            sharedUtils.showAlert("Product error", result.data.error);  
+          } else {
+            console.dir(result.data);
+            $scope.products = result.data.products;
+            $scope.$broadcast("scroll.refreshComplete"); // Used to hide the loading button
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Product fetch error!");
+      });
+    }
+
+
+    $scope.goBack = function(){
+      $ionicHistory.goBack();
+    }
+})
 
 .controller('categoryCtrl', function($scope,$rootScope,sharedUtils,$ionicHistory,$state,$ionicSideMenuDelegate) {
 
@@ -487,8 +514,8 @@ angular.module('app.controllers', [])
           if (result.data.msg == "error") {
             sharedUtils.showAlert("Category error", result.data.error);  
           } else {
-            $scope.menu = result.data.categories;
             console.dir(result.data);
+            $scope.menu = result.data.categories;
             $scope.$broadcast("scroll.refreshComplete");
             //sharedUtils.showAlert("Reset Password", result.data.success);  
             //sharedUtils.changeView('/page1/page5');

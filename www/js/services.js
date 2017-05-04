@@ -106,6 +106,23 @@ angular.module('app.services', [])
         });
     };
 
+    functionObj.getProducts = function(category_id) {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      //url: base_url + 'json/save_book',
+      url: $rootScope.base_url+ 'get_products_by_category&category_id='+category_id,
+      method: "POST",
+      //data: request_data,
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          return response;
+          //$rootScope.$emit('handleUserSignup',user);
+        });
+    };
+
     return functionObj;
 
 }])
