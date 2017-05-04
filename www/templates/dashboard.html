@@ -1,8 +1,96 @@
 <ion-view style="" class=" " id="home" title="Home">
     <ion-content class="has-header" padding="true">
-        I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>
-	    I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>
-	    I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>
-	    I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>I AM DASHOBOAORD PAGE</br>
+
+
+
+        <section class="blue" style="background:#f1f1f1;color:#000000;">
+	        <div class="container">
+				<div ng-if="slickConfig_img_Loaded != true">
+					<div class="text-center">
+						<h1 class="ion-loading-c">
+							<img ng-src="img/ajax-loader.gif">
+						</h1>
+					</div>
+				    <!-- code to render the regular video block -->
+				</div>
+	            <slick class="slider_demo" settings="slickConfig_img" ng-if="slickConfig_img_Loaded" dots="true">
+	                <div ng-repeat="i in banner_images track by $index">
+						<div class="text-center ion-loading-c">
+							<img ng-src="{{i.src}}" align="center" class="text-center ion-loading-c" width="50%" title="{{i.title}}" />
+						</div>
+	                </div>
+	            </slick>
+	        </div>
+      	</section>
+
+        <section class="blue" style="background:#f1f1f1;color:#000000;">
+		    <div class="container">
+				<div ng-if="slickConfig_slider_Loaded != true">
+					<div class="text-center">
+						<h1 class="ion-loading-c">
+							<img ng-src="img/ajax-loader.gif">
+						</h1>
+					</div>
+				    <!-- code to render the regular video block -->
+				</div>
+
+		        <slick class="slider_demo" settings="slickConfig_slider" ng-if="slickConfig_slider_Loaded">
+	                <div ng-repeat="i in slider_images track by $index">
+						<div class="text-center ion-loading-c">
+							<img ng-src="{{i.src}}" align="center" class="text-center ion-loading-c" width="100%" title="{{i.title}}" />
+						</div>
+	                </div>
+		        </slick>
+		    </div>
+	    </section>
+
+<!--         <section class="blue">
+		    <div class="container">
+		        <slick class="slider_demo" settings="slickConfig" ng-if="slickConfig1Loaded" dots="true">
+		            <div ng-repeat="i in number1 track by $index">
+		                <div class="">
+		                    <h3 style="font-color:#ff0000;">{{ i }}</h3>
+		                </div>
+		            </div>
+		        </slick>        	
+		    </div>
+	    </section> -->
+
+<!--         <section class="blue">
+		    <div class="container">
+		        <slick class="slider_demo" settings="slickConfig2" ng-if="slickConfig2Loaded">
+		            <div ng-repeat="i in number2 track by $index">
+		                <div class="">
+		                    <h3 style="font-color:#ff0000;">{{ i.label }}</h3>
+		                </div>
+		            </div>
+		        </slick>
+		    </div>
+	    </section> -->
+
+<!--         <section class="blue">
+		    <div class="container">
+	            <slick class="slider_demo" settings="slickConfig3" ng-if="slickConfig3Loaded">
+	                <div ng-repeat="i in number3">
+	                    <div class="">
+	                    	<h3>{{ i.label }}</h3>
+	                    </div>
+	                </div>
+	            </slick>
+		    </div>
+	    </section> -->
+
+<!--         <section class="blue">
+		    <div class="container">
+	            <slick class="slider_demo" settings="slickConfig4" ng-if="slickConfig4Loaded">
+	                <div ng-repeat="i in number4">
+	                    <div style="width:{{ i.label }}px;height:100px">
+	                    	<h3>{{ i.label }}</h3>
+	                    </div>
+	                </div>
+	            </slick>
+		    </div>
+	    </section> -->
+
     </ion-content>
 </ion-view>
