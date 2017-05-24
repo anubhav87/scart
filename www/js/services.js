@@ -118,10 +118,33 @@ angular.module('app.services', [])
       data: send_data,
       dataType: 'JSON',
         }).then(function(response) {
+          //console.dir(response.data.products);
+          //return response.data.products;
           return response;
           //$rootScope.$emit('handleUserSignup',user);
         });
     };
+
+    functionObj.getProductDetail = function(product_id) {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      //url: base_url + 'json/save_book',
+      url: $rootScope.base_url+ 'get_product_details_by_product_id&product_id='+product_id,
+      method: "POST",
+      //data: request_data,
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          //console.dir(response.data.products);
+          //return response.data.products;
+          return response;
+          //$rootScope.$emit('handleUserSignup',user);
+        });
+    };
+
+    
 
     return functionObj;
 

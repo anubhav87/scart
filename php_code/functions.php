@@ -27,8 +27,15 @@ switch($_GET['action'])  {
         break;
 
     case 'get_products_by_category' :
-        getProductsByCategory($_REQUEST); 
+        //getProductsByCategory($_REQUEST); 
+        getProductsByCategory($_REQUEST);
         break;
+
+    case 'get_product_details_by_product_id' :
+        //getProductsByCategory($_REQUEST); 
+        getProductDetailsByProductId($_REQUEST);
+        break;
+        
 }
 
 function openDbConn() {
@@ -170,7 +177,70 @@ function getCategories() {
     echo $jsn;
 }
 
+function getProductDetailsByProductId($req_data) {
+
+	$data = getProduct($req_data['product_id']);
+	if(!empty($data)) {
+		$arr = array (
+			'msg' => "success",
+			'product_details' => $data,
+			'success' => 'Product details found and returned!'
+		);    	
+	} else {
+		$arr = array (
+			'msg' => "error",
+			'success' => 'Product details not found!'
+		);    	
+	}
+
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+
+}
+
 function getProductsByCategory($req_data) {
+
+	$con = openDbConn();
+	$sql = "SELECT p.product_id, (SELECT AVG(rating) AS total FROM oc_review r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM oc_product_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '1' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM oc_product_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '1' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special FROM oc_product_to_category p2c LEFT JOIN oc_product p ON (p2c.product_id = p.product_id) LEFT JOIN oc_product_description pd ON (p.product_id = pd.product_id) LEFT JOIN oc_product_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '1' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '0' AND p2c.category_id = '".$req_data['category_id']."' GROUP BY p.product_id ORDER BY p.sort_order ASC, LCASE(pd.name) ASC";
+
+	$res = mysqli_query($con,$sql);
+    if (!mysqli_num_rows($res)) {
+		$arr = array (
+			'msg' => "error",
+			'success' => 'No Products found!'
+		);    	
+    } else {
+    	$data = array();
+    	while ($row = mysqli_fetch_array($res)) {
+			$row_data = array();
+			$row_data['product_id'] = $row['product_id'];
+			$row_data['product_data'] = getProduct($row['product_id']);
+    		array_push($data, $row_data);
+    	}
+		$arr = array (
+			'msg' => "success",
+			'products' => $data,
+			'success' => 'Products found and returned!'
+		);    	
+    }
+
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+}
+
+function getProduct($product_id) {
+
+	$con = openDbConn();
+	$sql = "SELECT DISTINCT *, pd.name AS name, p.image, m.name AS manufacturer, (SELECT price FROM oc_product_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '1' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM oc_product_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '1' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special, (SELECT points FROM oc_product_reward pr WHERE pr.product_id = p.product_id AND customer_group_id = '1') AS reward, (SELECT ss.name FROM oc_stock_status ss WHERE ss.stock_status_id = p.stock_status_id AND ss.language_id = '1') AS stock_status, (SELECT wcd.unit FROM oc_weight_class_description wcd WHERE p.weight_class_id = wcd.weight_class_id AND wcd.language_id = '1') AS weight_class, (SELECT lcd.unit FROM oc_length_class_description lcd WHERE p.length_class_id = lcd.length_class_id AND lcd.language_id = '1') AS length_class, (SELECT AVG(rating) AS total FROM oc_review r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT COUNT(*) AS total FROM oc_review r2 WHERE r2.product_id = p.product_id AND r2.status = '1' GROUP BY r2.product_id) AS reviews, p.sort_order FROM oc_product p LEFT JOIN oc_product_description pd ON (p.product_id = pd.product_id) LEFT JOIN oc_product_to_store p2s ON (p.product_id = p2s.product_id) LEFT JOIN oc_manufacturer m ON (p.manufacturer_id = m.manufacturer_id) WHERE p.product_id = '".$product_id."' AND pd.language_id = '1' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '0'";
+	$res = mysqli_query($con,$sql);
+	$row = mysqli_fetch_assoc($res);
+	return $row;
+}
+
+
+function getProductsByCategoryOld($req_data) {
 	
 	//$con = openDbConn();
 	//print_r($req_data['category_id']);
@@ -242,7 +312,7 @@ function checkApiSession() {
 	 
 	$json = do_curl_request($url, $fields);
 	$ret_data = json_decode($json);
-	return $ret_data->cookie;	
+	echo $ret_data->cookie;	
 }
 
 

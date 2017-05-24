@@ -8,9 +8,11 @@
 	<ion-content class="padding" ng-init="loadProducts()">
 		<ion-refresher on-refresh="loadProducts();"></ion-refresher>
 		<ion-item  type="item-text-wrap" ng-repeat="item in products | filter:search">
-			<img ng-src="{{item.thumb}}" align="center" class="text-center ion-loading-c" title="{{item.name}}" />
-			<span ng-bind-html="item.name"></span>
-			<span ng-bind-html="item.product_id"></span>
+			<img ng-src="{{store_url}}{{item.product_data.image}}" align="center" class="text-center ion-loading-c" title="{{item.product_data.name}}" width="100px" />
+			<span ng-bind-html="item.product_data.name"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span ng-bind-html="item.product_data.stock_status"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span ng-bind-html="item.product_data.price"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span ng-bind-html="item.product_id"></span>&nbsp;&nbsp;&nbsp;&nbsp;
 			<a style="text-decoration:none;" ui-sref="tabsController.product_details({ product_id: {{item.product_id}} })">
 				Read More
 			</a>

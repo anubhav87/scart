@@ -15,7 +15,8 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services',
 .run(function($ionicPlatform,$rootScope) {
 
   $rootScope.extras = false;
-  $rootScope.base_url = 'http://localhost:8082/ionic_apps/scart/php_code/functions.php?action=';
+  $rootScope.store_url = 'http://localhost/opencart-2/image/';
+  $rootScope.base_url = 'http://localhost/ionic_apps/scart/php_code/functions.php?action=';
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

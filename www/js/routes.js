@@ -193,8 +193,8 @@ angular.module('app.routes', [])
     controller: 'forgotPasswordCtrl'
   })
   
-//$urlRouterProvider.otherwise('/page1/dashboard')
-$urlRouterProvider.otherwise('/page1/category')
+$urlRouterProvider.otherwise('/page1/dashboard')
+//$urlRouterProvider.otherwise('/page1/category')
 
 //$urlRouterProvider.otherwise('/page1/page5')
 //$urlRouterProvider.otherwise('/page7')

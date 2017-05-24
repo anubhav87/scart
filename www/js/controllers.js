@@ -61,14 +61,14 @@ angular.module('app.controllers', [])
     // Slick Slider
     //====================================
     $scope.slider_images = [
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-1.jpg", title: 1}, 
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-2.jpg", title: 2}, 
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-3.jpg", title: 3}, 
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-4.jpg", title: 4}, 
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-5.jpg", title: 5}, 
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-6.jpg", title: 6}, 
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-1.jpg", title: 7}, 
-      {src: "http://localhost:8082/ionic_apps/scart/php_code/e_comm/small-2.jpg", title: 8}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-1.jpg", title: 1}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-2.jpg", title: 2}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-3.jpg", title: 3}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-4.jpg", title: 4}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-5.jpg", title: 5}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-6.jpg", title: 6}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-1.jpg", title: 7}, 
+      {src: "http://localhost/ionic_apps/scart/php_code/e_comm/small-2.jpg", title: 8}, 
     ];
 
     $scope.slickConfig_slider_Loaded = true;
@@ -483,7 +483,7 @@ angular.module('app.controllers', [])
           if (result.data.msg == "error") {
             sharedUtils.showAlert("Product error", result.data.error);  
           } else {
-            console.dir(result.data);
+            console.dir(result.data.products);
             $scope.products = result.data.products;
             $scope.$broadcast("scroll.refreshComplete"); // Used to hide the loading button
           }
@@ -493,9 +493,32 @@ angular.module('app.controllers', [])
       });
     }
 
+    $scope.product_details = [];
+    $scope.loadProductDetails = function() {
+      sharedUtils.showLoading();
+
+      sharedUtils.getProductDetail($stateParams.product_id).then(function (result) {
+         sharedUtils.hideLoading();
+          if (result.data.msg == "error") {
+            sharedUtils.showAlert("Product error", result.data.error);  
+          } else {
+            console.dir(result.data.product_details);
+            $scope.product_details = result.data.product_details;
+            $scope.$broadcast("scroll.refreshComplete"); // Used to hide the loading button
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Product fetch error!");
+      });
+    }
 
     $scope.goBack = function(){
       $ionicHistory.goBack();
+    }
+
+
+    $scope.addToCart = function() {
+      alert("Add to cart called");
     }
 })
 

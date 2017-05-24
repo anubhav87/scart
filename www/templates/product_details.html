@@ -1,8 +1,41 @@
-<ion-view style="" class="" id="products" title="Product Details">
-	<ion-content class="padding">
-		PRODCUTS
+<ion-view style="" class="" id="products_details" title="Product Details">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear" ng-click="goBack()">
+          <i class="icon ion-ios-arrow-back"></i>
+        </button>
+     </ion-nav-buttons>
 
-		<br />
-		Make something like related products
-	</ion-content>
+     <ion-content class="padding" ng-init="loadProductDetails()">
+     		<ion-refresher on-refresh="loadProductDetails();"></ion-refresher>
+     		<ion-item>
+     			<div class="row12">
+					<img ng-src="{{store_url}}{{product_details.image}}" align="center" class="text-center ion-loading-c" title="{{product_details.name}}" width="250px" />     				
+     			</div>
+
+     			<div class="row12">
+					<div><span ng-bind-html="product_details.name"></span></div>
+					<div><span ng-bind-html="product_details.description"></span></div>
+					<div><span ng-bind-html="product_details.tag"></span></div>
+					<div><span ng-bind-html="product_details.sku"></span></div>
+					<div><span ng-bind-html="product_details.upc"></span></div>
+					<div><span ng-bind-html="product_details.ean"></span></div>
+					<div><span ng-bind-html="product_details.jan"></span></div>
+					<div><span ng-bind-html="product_details.isbn"></span></div>
+					<div><span ng-bind-html="product_details.mpn"></span></div>
+					<div><span ng-bind-html="product_details.location"></span></div>
+					<div><span ng-bind-html="product_details.quantity"></span></div>
+					<div><span ng-bind-html="product_details.stock_status"></span></div>
+					<div><span ng-bind-html="product_details.image"></span></div>
+					<div><span ng-bind-html="product_details.manufacturer_id"></span></div>
+					<div><span ng-bind-html="product_details.manufacturer"></span></div>
+					<div><span ng-bind-html="product_details.price"></span></div>
+					<div><span ng-bind-html="product_details.reward"></span></div>
+					<div><span ng-bind-html="product_details.minimum"></span></div>
+					<div><span ng-bind-html="product_details.status"></span></div>
+					<div><span ng-bind-html="product_details.date_added"></span></div>
+					<div><span ng-bind-html="product_details.viewed"></span></div>
+     			</div>
+				<button class="button button-large button-balanced" ng-click="addToCart()">Add to cart</button>
+     		</ion-item>
+     </ion-content>
 </ion-view>
