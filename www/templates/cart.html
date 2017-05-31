@@ -14,12 +14,17 @@
         		</div>
 				
 			</div>
+
 			<div ng-if=cart_data.products.length>
+
+
 				<ion-item type="item-text-wrap" ng-repeat="item in cart_data.products">
 					<div style="padding:15px">
 						<span ng-bind-html="item.product_id"></span>
 						<span ng-bind-html="item.name"></span>
+						<span class="ion-minus-round" ng-click="updateQuantity(item.product_id, item.key, item.quantity, 'remove')"></span>
 						<span ng-bind-html="item.quantity"></span>
+						<span class="ion-plus-round" ng-click="updateQuantity(item.product_id, item.key, item.quantity, 'add')"></span>
 						<span ng-bind-html="item.price"></span>
 						<span class="pull-right ion-close-circled" ng-click="removeProduct(item.product_id,item.key)"></span>
 					</div>

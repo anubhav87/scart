@@ -56,6 +56,10 @@ switch($_GET['action'])  {
     case 'apply_coupon' :
         applyCoupon($_REQUEST);
         break;
+
+    case 'update_product_quantity' :
+        updateProductQuantity($_REQUEST);
+        break;
 }
 
 
@@ -554,5 +558,35 @@ function applyCoupon($req_data) {
 	echo $jsn;
 }
 
+function updateProductQuantity($req_data) {
+
+	$token = checkApiSession();
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/cart/edit&token='.$token;
+
+	$fields = array (
+		'key' => $req_data['key'],
+		'quantity' => $req_data['quantity'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+
+	if(isset($data->error)) {
+		$arr = array (
+			'msg' => 'error',
+			'data' => $data,
+			'error' => $data->error
+		);
+	} else {
+		$arr = array (
+			'msg' => 'success',
+			'data' => $data,
+			'success' => 'Quantity updated successfully!'
+		);
+	}
+
+	sleep(1);
+	$jsn = json_encode($arr);
+	echo $jsn;
+}
 
 ?>

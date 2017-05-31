@@ -343,6 +343,7 @@ angular.module('app.controllers', [])
 
     $scope.coupon_code= "5555";
     $scope.voucher_code= "2222";
+    $scope.myDate = new Date;
     
     $scope.applyCoupon = function(coupon_code) {
       $scope.coupon_code = coupon_code;
@@ -403,6 +404,32 @@ angular.module('app.controllers', [])
           sharedUtils.showAlert("Please note","Product add in cart error!");
       });
     }
+
+    $scope.updateQuantity = function(product_id, key, quantity, action) {
+      
+      sharedUtils.showLoading();
+
+      if(action == "add") {
+        quantity = quantity+1;
+      } else if(action == "remove") {
+        quantity = quantity-1;
+      }
+
+      sharedUtils.updateProductQuantity(product_id, key, quantity, action).then(function (result) {
+         sharedUtils.hideLoading();
+          if (result.data.msg == "error") {
+            sharedUtils.showAlert("Product quantity updated error", result.data.error);  
+          } else {
+            sharedUtils.showAlert("Product quantity updated success", result.data.success);  
+            $scope.loadCartProductsInBackground();
+            $scope.$broadcast("scroll.refreshComplete"); // Used to hide the loading button
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Product quantity remove action updated error!");
+      });
+    }
+
 
 })
 

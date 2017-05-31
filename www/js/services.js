@@ -226,6 +226,25 @@ angular.module('app.services', [])
         });
     };
 
+    functionObj.updateProductQuantity = function(product_id, key, quantity, action) {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      //url: base_url + 'json/save_book',
+      url: $rootScope.base_url+ 'update_product_quantity&product_id='+product_id+'&key='+key+'&quantity='+quantity+'&cart_action='+action,
+      method: "POST",
+      //data: request_data,
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          //console.dir(response.data.products);
+          //return response.data.products;
+          return response;
+          //$rootScope.$emit('handleUserSignup',user);
+        });
+    };
+
     
 
     return functionObj;
