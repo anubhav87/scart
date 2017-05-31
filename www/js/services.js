@@ -144,6 +144,88 @@ angular.module('app.services', [])
         });
     };
 
+    functionObj.getCartProducts = function() {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      url: $rootScope.base_url+ 'get_cart_products',
+      method: "POST",
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          return response;
+        });
+    };
+
+    
+    functionObj.applyCoupon = function(coupon) {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      url: $rootScope.base_url+ 'apply_coupon&coupon='+coupon,
+      method: "POST",
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          return response;
+        });
+    };
+
+    functionObj.addOrder = function() {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      url: $rootScope.base_url+ 'add_order',
+      method: "POST",
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          return response;
+        });
+    };
+
+    functionObj.addProductInCart = function(product_id) {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      //url: base_url + 'json/save_book',
+      url: $rootScope.base_url+ 'add_to_cart&product_id='+product_id,
+      method: "POST",
+      //data: request_data,
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          //console.dir(response.data.products);
+          //return response.data.products;
+          return response;
+          //$rootScope.$emit('handleUserSignup',user);
+        });
+    };
+
+
+    functionObj.removeProductFromCart = function(product_id, key) {
+      
+      var send_data = "data=" + JSON.stringify({});
+      return $http({
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      //url: base_url + 'json/save_book',
+      url: $rootScope.base_url+ 'remove_from_cart&product_id='+product_id+'&key='+key,
+      method: "POST",
+      //data: request_data,
+      data: send_data,
+      dataType: 'JSON',
+        }).then(function(response) {
+          //console.dir(response.data.products);
+          //return response.data.products;
+          return response;
+          //$rootScope.$emit('handleUserSignup',user);
+        });
+    };
+
     
 
     return functionObj;

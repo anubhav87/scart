@@ -35,8 +35,30 @@ switch($_GET['action'])  {
         //getProductsByCategory($_REQUEST); 
         getProductDetailsByProductId($_REQUEST);
         break;
-        
+
+    case 'add_to_cart' :
+        //getProductsByCategory($_REQUEST); 
+        addTocart($_REQUEST);
+        break;
+
+    case 'remove_from_cart' :
+        removeFromcart($_REQUEST);
+        break;
+
+    case 'get_cart_products' :
+        getCartProducts();
+        break;
+
+    case 'add_order' :
+        addOrder();
+        break;
+
+    case 'apply_coupon' :
+        applyCoupon($_REQUEST);
+        break;
 }
+
+
 
 function openDbConn() {
 
@@ -142,7 +164,8 @@ function resetPassword($p_data) {
     echo $jsn;
 }
 
-function getCategories() {
+
+function getCategoriesOld() {
 	
 	$con = openDbConn();
 
@@ -179,6 +202,46 @@ function getCategories() {
 
 function getProductDetailsByProductId($req_data) {
 
+	$token = checkApiSession();
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/custom/getproductdetails&token='.$token;
+	$fields = array (
+		'product_id' => $req_data['product_id'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+	$arr = array (
+		'msg' => "success",
+		'product_details' => $data->product_details,
+		'success' => 'Product details found and returned!'
+	);
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+
+
+
+//	$data = getProduct($req_data['product_id']);
+	// if(!empty($data)) {
+	// 	$arr = array (
+	// 		'msg' => "success",
+	// 		'product_details' => $data,
+	// 		'success' => 'Product details found and returned!'
+	// 	);    	
+	// } else {
+	// 	$arr = array (
+	// 		'msg' => "error",
+	// 		'success' => 'Product details not found!'
+	// 	);    	
+	// }
+
+	// sleep(1);
+ //    $jsn = json_encode($arr);
+ //    echo $jsn;
+
+}
+
+function getProductDetailsByProductIdOld($req_data) {
+
 	$data = getProduct($req_data['product_id']);
 	if(!empty($data)) {
 		$arr = array (
@@ -199,7 +262,7 @@ function getProductDetailsByProductId($req_data) {
 
 }
 
-function getProductsByCategory($req_data) {
+function getProductsByCategoryOld($req_data) {
 
 	$con = openDbConn();
 	$sql = "SELECT p.product_id, (SELECT AVG(rating) AS total FROM oc_review r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM oc_product_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '1' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM oc_product_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '1' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special FROM oc_product_to_category p2c LEFT JOIN oc_product p ON (p2c.product_id = p.product_id) LEFT JOIN oc_product_description pd ON (p.product_id = pd.product_id) LEFT JOIN oc_product_to_store p2s ON (p.product_id = p2s.product_id) WHERE pd.language_id = '1' AND p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '0' AND p2c.category_id = '".$req_data['category_id']."' GROUP BY p.product_id ORDER BY p.sort_order ASC, LCASE(pd.name) ASC";
@@ -239,15 +302,31 @@ function getProduct($product_id) {
 	return $row;
 }
 
+function getCategories($req_data) {
 
-function getProductsByCategoryOld($req_data) {
+	$token = checkApiSession();
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/custom/getallcategory&token='.$token;
+	$fields = array (
+		'action' => $req_data['action'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+	$arr = array (
+		'msg' => "success",
+		'categories' => $data->categories,
+		'success' => 'Categories found and returned!'
+	);
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+}
+
+function getProductsByCategory($req_data) {
 	
-	//$con = openDbConn();
-	//print_r($req_data['category_id']);
 	$token = checkApiSession();
 
 	// Working code to get the products by category id
-	$url = 'http://localhost/opencart-2/index.php?route=api/custom/productsbycategory&token='.$token;
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/custom/productsbycategory&token='.$token;
 	$fields = array (
 		'category_id' => $req_data['category_id'],
 	);
@@ -262,16 +341,6 @@ function getProductsByCategoryOld($req_data) {
 	sleep(1);
     $jsn = json_encode($arr);
     echo $jsn;
-
-	// $url = 'http://localhost/opencart-2/index.php?route=api/custom/getcategory&token='.$ret_data->cookie;
-	// $fields = array(
-	//   'category_id' => 60,
-	// );
-	// $json = do_curl_request($url,$fields);
-	// $data = json_decode($json);
-	 
-	// print_r("</br></br>"); 
-	// var_dump($data);	
 }
 
 function do_curl_request($url, $params=array()) {
@@ -303,16 +372,186 @@ function do_curl_request($url, $params=array()) {
 
 function checkApiSession() {
 
-	$url = 'http://localhost/opencart-2/index.php?route=api/login';
-	 
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/login';
 	$fields = array(
 	  'username' => 'admin',
 	  'password' => 'blV2oxA7WGykj3JurYx5nSZiocLLnNLFn6vBai57sgVpLzQsLJRhWFBwGZOGygZEtN5rOTS3FFV8de21XBrNiUhcb8GvbUHVOttKMdHpfQqHA3GT86umeOtoEOjMGakjEC2HVFPJBS5CqjdKFm3Hxa40nsPyVO4VFxLvtLoR60zUMZll63CUu8CcABeY0YyqRy3TywCHXVJ2oh4zV8xcf4xSZtXudmcJjroKGmrk425gBpfaxEFIBHQbiaEa6Ykz',
 	);
-	 
+
 	$json = do_curl_request($url, $fields);
 	$ret_data = json_decode($json);
-	echo $ret_data->cookie;	
+	//echo $ret_data->cookie;	
+	return $ret_data->cookie;
+}
+
+function removeFromcart($req_data) {
+	$token = checkApiSession();
+
+	// Working code to get the products by category id
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/cart/remove&token='.$token;
+	$fields = array (
+		'product_id' => $req_data['product_id'],
+		'key' => $req_data['key'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+
+
+	if(isset($data->error)) {
+		$arr = array (
+			'msg' => 'error!',
+			'data' => $data,
+			'error' => 'Problem in adding the product!'
+		);
+	} else if(isset($data->success)) {
+		$arr = array (
+			'msg' => 'success',
+			'data' => $data,
+			'success' => 'Product removed successfully!'
+		);
+	} else {
+		$arr = array (
+			'msg' => 'waiting',
+			'data' => $data,
+			'waiting' => 'Waiting for the response from cart!'
+		);
+	}
+
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+}
+
+function addTocart($req_data) {
+	$token = checkApiSession();
+
+	// Working code to get the products by category id
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/cart/add&token='.$token;
+	$fields = array (
+		'product_id' => $req_data['product_id'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+
+
+	if(isset($data->error)) {
+		$arr = array (
+			'msg' => 'error!',
+			'data' => $data,
+			'error' => 'Problem in adding the product!'
+		);
+	} else if(isset($data->success)) {
+		$arr = array (
+			'msg' => 'success',
+			'data' => $data,
+			'success' => 'Product added successfully!'
+		);
+	} else {
+		$arr = array (
+			'msg' => 'waiting',
+			'data' => $data,
+			'waiting' => 'Waiting for the response from cart!'
+		);
+	}
+
+	sleep(1);
+    $jsn = json_encode($arr);
+    echo $jsn;
+}
+
+
+function getCartProducts() {
+	$token = checkApiSession();
+
+	// Working code to get the products by category id
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/cart/products&token='.$token;
+	$fields = array (
+		// 'product_id' => $req_data['product_id'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+
+	if(isset($data->error)) {
+		$arr = array (
+			'msg' => 'error',
+			'data' => $data,
+			'error' => 'Problem in getting products of cart!'
+		);
+	} else {
+		$arr = array (
+			'msg' => 'success',
+			'data' => $data,
+			'success' => 'Cart products fetched successfully!'
+		);
+	}	
+
+	sleep(1);
+	$jsn = json_encode($arr);
+	echo $jsn;
+}
+
+function addOrder() {
+	$token = checkApiSession();
+
+	// Working code to get the products by category id
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/order/add&token='.$token;
+	$fields = array (
+		// 'product_id' => $req_data['product_id'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+
+	// if(isset($data->error)) {
+	// 	$arr = array (
+	// 		'msg' => 'error',
+	// 		'data' => $data,
+	// 		'error' => 'Problem in getting products of cart!'
+	// 	);
+	// } else {
+	// 	$arr = array (
+	// 		'msg' => 'success',
+	// 		'data' => $data,
+	// 		'success' => 'Cart products fetched successfully!'
+	// 	);
+	// }	
+	$arr = array (
+		'msg' => 'response',
+		'data' => $data,
+		'success' => 'Add orrder response!'
+	);
+	sleep(1);
+	$jsn = json_encode($arr);
+	echo $jsn;
+}
+
+function applyCoupon($req_data) {
+	$token = checkApiSession();
+
+	// Working code to get the products by category id
+	$url = 'http://127.0.0.1/opencart-2/index.php?route=api/coupon&token='.$token;
+	$fields = array (
+		'coupon' => $req_data['coupon'],
+	);
+	$json = do_curl_request($url,$fields);
+	$data = json_decode($json);
+
+	if(isset($data->error)) {
+		$arr = array (
+			'msg' => 'error',
+			'data' => $data,
+			'error' => $data->error
+		);
+	} else {
+		$arr = array (
+			'msg' => 'success',
+			'data' => $data,
+			'success' => 'Coupon applied successfully!'
+		);
+	}
+
+	sleep(1);
+	$jsn = json_encode($arr);
+	echo $jsn;
 }
 
 

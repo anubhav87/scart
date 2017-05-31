@@ -9,10 +9,11 @@
      		<ion-refresher on-refresh="loadProductDetails();"></ion-refresher>
      		<ion-item>
      			<div class="row12">
-					<img ng-src="{{store_url}}{{product_details.image}}" align="center" class="text-center ion-loading-c" title="{{product_details.name}}" width="250px" />     				
+					<img ng-src="{{product_details.image}}" align="center" class="text-center ion-loading-c" title="{{product_details.name}}" width="250px" />     				
      			</div>
 
      			<div class="row12">
+     				{{testtest}}
 					<div><span ng-bind-html="product_details.name"></span></div>
 					<div><span ng-bind-html="product_details.description"></span></div>
 					<div><span ng-bind-html="product_details.tag"></span></div>
@@ -25,17 +26,15 @@
 					<div><span ng-bind-html="product_details.location"></span></div>
 					<div><span ng-bind-html="product_details.quantity"></span></div>
 					<div><span ng-bind-html="product_details.stock_status"></span></div>
-					<div><span ng-bind-html="product_details.image"></span></div>
 					<div><span ng-bind-html="product_details.manufacturer_id"></span></div>
 					<div><span ng-bind-html="product_details.manufacturer"></span></div>
-					<div><span ng-bind-html="product_details.price"></span></div>
-					<div><span ng-bind-html="product_details.reward"></span></div>
-					<div><span ng-bind-html="product_details.minimum"></span></div>
-					<div><span ng-bind-html="product_details.status"></span></div>
-					<div><span ng-bind-html="product_details.date_added"></span></div>
-					<div><span ng-bind-html="product_details.viewed"></span></div>
+					<div>Reward : <span ng-bind-html="product_details.reward"></span>&nbsp;&nbsp;Price : <span ng-bind-html="product_details.price"></span></div>
+					<div>Status : <span ng-bind-html="product_details.status"></span>&nbsp;&nbsp;Minimum : <span ng-bind-html="product_details.minimum"></span></div>
+					<div>Added On : <span ng-bind-html="product_details.date_added"></span>&nbsp;&nbsp;Viewed : <span ng-bind-html="product_details.viewed"></span></div>
+					<div></div>
+					<button class="button button-large button-balanced" ng-click="addToCart()">Add to cart</button>
      			</div>
-				<button class="button button-large button-balanced" ng-click="addToCart()">Add to cart</button>
+
      		</ion-item>
      </ion-content>
 </ion-view>

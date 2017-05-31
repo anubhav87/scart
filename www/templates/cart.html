@@ -1,8 +1,84 @@
 <ion-view style="" class=" " id="cart" title="Cart">
-    <ion-content class="has-header" padding="true">
-	    {{testtest}} I AM CART PAGE</br>I AM CART PAGE</br>I AM CART PAGE</br>
-	    I AM CART PAGE</br>I AM CART PAGE</br>I AM CART PAGE</br>
-	    I AM CART PAGE</br>I AM CART PAGE</br>I AM CART PAGE</br>
-	    I AM CART PAGE</br>I AM CART PAGE</br>I AM CART PAGE</br>
+    <ion-content class="has-header" padding="false" ng-init="loadCartProducts()">
+		<ion-refresher on-refresh="loadCartProducts();"></ion-refresher>
+		<ion-list>
+
+			<div ng-if=cart_data.products.length==0>
+    			<div style="text-align:center;">
+                    <br/><br/>
+                    Oppss No Product in cart!
+        			<br/><br/>
+        			<div>
+        				<a ui-sref="tabsController.dashboard" class="btn btn-default">Continue Shopping</a>
+        			</div>
+        		</div>
+				
+			</div>
+			<div ng-if=cart_data.products.length>
+				<ion-item type="item-text-wrap" ng-repeat="item in cart_data.products">
+					<div style="padding:15px">
+						<span ng-bind-html="item.product_id"></span>
+						<span ng-bind-html="item.name"></span>
+						<span ng-bind-html="item.quantity"></span>
+						<span ng-bind-html="item.price"></span>
+						<span class="pull-right ion-close-circled" ng-click="removeProduct(item.product_id,item.key)"></span>
+					</div>
+				</ion-item>
+
+		      	<ion-list>
+		      		<div style="padding:0px 15px 0px 15px">
+				          <table class="table table-bordered">
+				            <tr ng-repeat="total in cart_data.totals">
+				              <td class="text-right"><strong>{{total.title}}:</strong></td>
+				              <td class="text-right">{{total.text}}</td>
+				            </tr>
+				          </table>
+		      		</div>
+		      	</ion-list>
+		      	
+		      	<ion-list>
+		      		<div style="padding:0px 15px 0px 15px;">
+			      		<h2>What would you like to do next?</h2>
+			      		<p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+			      	</div>
+			    </ion-list>
+
+				<div style="padding:0px 15px 0px 15px;">
+		          <table class="table table-bordered">
+		            <tr>
+		              <td class="text-right">
+		              	Enter your coupon here
+		              </td>
+		              <td class="text-right">
+		              	<input type="text" name="coupon" ng-model="coupon_code" placeholder="Enter your coupon here" class="pull-left">
+		        		<input type="button" value="Apply Coupon" id="button-coupon" ng-click="applyCoupon(coupon_code);" class="btn btn-primary">
+		              </td>
+		            </tr>
+		          </table>
+				</div>
+
+				<div style="padding:0px 15px 0px 15px;">
+		          <table class="table table-bordered">
+		            <tr>
+		              <td class="text-right">
+		              	Apply Voucher Here
+		              </td>
+		              <td class="text-right">
+		              	<input type="text" name="voucher" ng-model="voucher_code" placeholder="Enter your gift voucher code here" style="width:50%;" class="pull-left">
+		        		<input type="button" value="Apply Voucher" id="button-voucher" ng-click="applyVoucher();" class="btn btn-primary">
+		              </td>
+		            </tr>
+		          </table>
+				</div>
+
+		      	<ion-list>
+			      	<div class="buttons" style="padding:15px">
+			        	<div class="pull-left"><a ui-sref="tabsController.dashboard" class="btn btn-default">Continue Shopping</a></div>
+			        	<div class="pull-right"><a ui-sref="tabsController.checkout" class="btn btn-primary">Checkout</a></div>
+			      	</div>
+      			</ion-list>	
+			</div>
+
+		</ion-list>
 	</ion-content>
 </ion-view>

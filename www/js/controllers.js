@@ -2,7 +2,8 @@ angular.module('app.controllers', [])
 
 .controller('indexCtrl', function($scope,$rootScope,sharedUtils,$ionicHistory,$state,$ionicSideMenuDelegate) {
 
-    $scope.testtest = "TESTING TEXT";
+    $rootScope.testtest = "TESTING TEXT A";
+    $rootScope.cart_data = [];
     $ionicSideMenuDelegate.toggleLeft(); //To close the side bar
     //$ionicSideMenuDelegate.canDragContent(false);  // To remove the sidemenu white space
 
@@ -23,6 +24,18 @@ angular.module('app.controllers', [])
         sharedUtils.hideLoading();
         $state.go('tabsController.dashboard', {}, {location: "replace"});
     }
+
+    $scope.loadCartProductsInBackground = function() {
+      sharedUtils.getCartProducts().then(function (result) {
+          if (result.data.msg == "error") {
+          } else {
+            $rootScope.cart_data = result.data.data;
+          }
+      }, function (error) {
+          sharedUtils.showAlert("Please note","Error in refreshing the cart!");
+      });
+    }
+
 })
 
 .controller('dashboardCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate, $timeout) {
@@ -310,8 +323,87 @@ angular.module('app.controllers', [])
 
 })
 
+.controller('checkoutCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate) {
+
+  $scope.addOrder = function() {
+      sharedUtils.showLoading();
+      sharedUtils.addOrder().then(function (result) {
+         sharedUtils.hideLoading();
+         console.dir(result);
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Error in placing order!");
+      });
+  }
+  
+})
+
+
 .controller('cartCtrl', function($scope,$rootScope,$ionicHistory,sharedUtils,$state,$ionicSideMenuDelegate) {
-  //$rootScope.extras = true;
+
+    $scope.coupon_code= "5555";
+    $scope.voucher_code= "2222";
+    
+    $scope.applyCoupon = function(coupon_code) {
+      $scope.coupon_code = coupon_code;
+      sharedUtils.showLoading();
+      sharedUtils.applyCoupon($scope.coupon_code).then(function (result) {
+          console.dir(result);
+          sharedUtils.hideLoading();
+          if (result.data.msg == "error") {
+            sharedUtils.showAlert("Coupon Error", result.data.error);  
+          } else {
+            $scope.loadCartProductsInBackground();
+            $scope.$broadcast("scroll.refreshComplete");
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Error in applying coupon code!");
+      });
+    }
+
+    $scope.applyVoucher = function() {
+      alert("applyVoucher here");
+    }
+
+    $scope.loadCartProducts = function() {
+      sharedUtils.showLoading();
+      //$scope.menu=$firebaseArray(fireBaseData.refMenu());
+
+      //sharedUtils.hideLoading();
+      sharedUtils.getCartProducts().then(function (result) {
+         sharedUtils.hideLoading();
+         console.dir(result.data);
+          if (result.data.msg == "error") {
+            sharedUtils.showAlert("Cart error", result.data.error);  
+          } else {
+            $rootScope.cart_data = result.data.data;
+            $scope.$broadcast("scroll.refreshComplete");
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Cart prodcut fetch error!");
+      });
+    }
+
+    $scope.removeProduct = function(product_id, key) {
+      
+      sharedUtils.removeProductFromCart(product_id, key).then(function (result) {
+         sharedUtils.showLoading();
+          if (result.data.msg == "error") {
+            sharedUtils.hideLoading();
+            sharedUtils.showAlert("Product error", result.data.error);  
+          } else {
+            sharedUtils.hideLoading();
+            $scope.loadCartProductsInBackground();
+            $scope.$broadcast("scroll.refreshComplete"); // Used to hide the loading button
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Product add in cart error!");
+      });
+    }
+
 })
 
 
@@ -475,6 +567,7 @@ angular.module('app.controllers', [])
     $scope.title = "Prodcuts";
 
     $scope.products = [];
+
     $scope.loadProducts = function() {
       sharedUtils.showLoading();
 
@@ -483,8 +576,9 @@ angular.module('app.controllers', [])
           if (result.data.msg == "error") {
             sharedUtils.showAlert("Product error", result.data.error);  
           } else {
-            console.dir(result.data.products);
+            console.dir(result.data);
             $scope.products = result.data.products;
+            console.dir($scope.products);
             $scope.$broadcast("scroll.refreshComplete"); // Used to hide the loading button
           }
       }, function (error) {
@@ -518,7 +612,22 @@ angular.module('app.controllers', [])
 
 
     $scope.addToCart = function() {
-      alert("Add to cart called");
+      //add_to_cart
+
+      sharedUtils.addProductInCart($stateParams.product_id).then(function (result) {
+         sharedUtils.hideLoading();
+          if (result.data.msg == "error") {
+            sharedUtils.showAlert("Product error", result.data.error);  
+          } else {
+            console.dir(result.data);
+            sharedUtils.showAlert("Product added", result.data.success);  
+             $scope.loadCartProductsInBackground();
+            $scope.$broadcast("scroll.refreshComplete"); // Used to hide the loading button
+          }
+      }, function (error) {
+          sharedUtils.hideLoading();
+          sharedUtils.showAlert("Please note","Product add in cart error!");
+      });      
     }
 })
 

@@ -24,6 +24,17 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('tabsController.checkout', {
+    url: '/checkout',
+    views: {
+      'tab6': {
+        templateUrl: 'templates/checkout.html',
+        controller: 'checkoutCtrl'
+      }
+    }
+  })
+
+
   .state('tabsController.category', {
     url: '/category',
     views: {
